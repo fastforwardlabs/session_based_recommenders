@@ -1,13 +1,13 @@
 # Session-based Recommender Systems
 
-This repo accompanies the Cloudera Fast Forward report [Session-based Recommender Systems](https://session-based-recommendations.fastforwardlabs.com/). It provides small library to train Word2Vec as a means of learning product or item representations in the context of user sessions (browsing histories, transaction histories, music playlists, etc.). These dense representations can then be used for item recommendation.  We formulate this under the Next Event Prediction task, that is, given a user's recent interaction, predict the next item they interact with (click on, purchase, listen to, etc.). 
+This repo accompanies the Cloudera Fast Forward report [Session-based Recommender Systems](https://session-based-recommenders.fastforwardlabs.com/). It provides small library to train Word2Vec as a means of learning product or item representations in the context of user sessions (browsing histories, transaction histories, music playlists, etc.). These dense representations can then be used for item recommendation.  We formulate this under the Next Event Prediction task, that is, given a user's recent interaction, predict the next item they interact with (click on, purchase, listen to, etc.). 
 
 Instructions are given both for general use (on a laptop, say), and for Cloudera CML and CDSW. We'll first describe what's here, then go through how to run everything.
 
 ## Structure
 ```
 .
-├── data        # This folder contains starter data ([Online Retail] dataset).
+├── data        # This folder contains starter data.
 ├── scripts     # This contains scripts for *doing* things -- training models, analysing results.
 ├── notebooks   # This contains Jupyter notebooks that accompany the report and demonstrate basic usage.
 └── recsys      # A small library of useful functions.
@@ -19,7 +19,7 @@ Let's examine each of the important folders in turn.
 ```
 ├── data.py     # Contains functions for loading and processing data into sessions 
 ├── metrics.py  # Contains metrics for evaluation
-├── models.py   # Contains wrappers for training Word2Vec both alone and with [Ray Tune](https://docs.ray.io/en/master/tune/index.html)
+├── models.py   # Contains wrappers for training Word2Vec both alone and with Ray Tune
 └── utils.py    # Helper functions for serialization and I/O
 ```
 
@@ -75,7 +75,7 @@ The `scripts` directory contains scripts to train models in various formats and 
 
 * `scripts/baseline_analysis.py`: a common baseline for recommendation systems is to simply recommend the most popular items. This script computes the "Association Rules" baseline which considers how frequently each item co-occurrs with all other items in a session for each session in the training set. 
 * `scripts/train_w2v_with_logging.py`: This script trains Gensim's implementation of the Word2Vec algorithm to learn representations for each item in a session. Identifying "similar" items then serves as the method for generating recommendations. Includes callbacks for monitoring metrics (Recall@K, training loss) as a function of training time (epochs). 
-* `scripts/tune_w2v_with_ray.py`: The Word2Vec algorithm has a large hyperparameter space and the default values are subpar for the task of generating good item representations for recommendation systems. This scripts performs hyperparameter optimization (HPO) with Ray Tune. 
+* `scripts/tune_w2v_with_ray.py`: The Word2Vec algorithm has a large hyperparameter space and the default values are subpar for the task of generating good item representations for recommendation systems. This scripts performs hyperparameter optimization (HPO) with [Ray Tune](https://docs.ray.io/en/master/tune/index.html). 
 * [CDSW/CML only] `setup_ray_cluster.py`:  Hyperparameter optimization can be computationally expensive but this expense can be mitigated, in part, through distribution. This script initializes (and tears down) a Ray Cluster for distributed hyperparameter optimization. If using, follow the instructions in this script to setup the cluster, then run `tune_w2v_with_ray.py` with the appropriate arguments, and finally shutdown the cluster after HPO is complete. 
 
 
