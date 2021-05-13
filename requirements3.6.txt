@@ -1,0 +1,11 @@
+pandas==1.1.5
+numpy==1.19.2
+scikit-learn==0.24.1
+gensim==3.8.3
+matplotlib==3.3.4
+black==19.10b0
+-e . # installs local recsys module in "edit" mode
+
+# The following two lines will install ray for Python 3.6
+https://s3-us-west-2.amazonaws.com/ray-wheels/latest/ray-2.0.0.dev0-cp36-cp36m-manylinux2014_x86_64.whl
+ray[tune]
